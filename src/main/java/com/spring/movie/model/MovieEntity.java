@@ -1,8 +1,12 @@
 package com.spring.movie.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,18 +24,36 @@ public class MovieEntity {
 	@Column(name = "genres")
 	private String genres;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "tconst")
+	private RatingEntity ratingEntity;
+	
 	public MovieEntity() {
 	
 	}
-	public MovieEntity(String tconst, String titleType, String primaryTitle, int runtimeMinutes, String genres) {
+	
+
+	public MovieEntity(String tconst, String titleType, String primaryTitle, int runtimeMinutes, String genres,
+			RatingEntity ratingEntity) {
 		super();
 		this.tconst = tconst;
 		this.titleType = titleType;
 		this.primaryTitle = primaryTitle;
 		this.runtimeMinutes = runtimeMinutes;
 		this.genres = genres;
-		
+		this.ratingEntity = ratingEntity;
 	}
+
+
+	public RatingEntity getRatingEntity() {
+		return ratingEntity;
+	}
+
+
+	public void setRatingEntity(RatingEntity ratingEntity) {
+		this.ratingEntity = ratingEntity;
+	}
+
 
 	public String getTconst() {
 		return tconst;

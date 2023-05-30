@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.movie.dao.MovieRepository;
-import com.spring.movie.model.GenereSubTotal;
 import com.spring.movie.model.MovieEntity;
 import com.spring.movie.model.MovieResponse;
 
@@ -36,16 +35,16 @@ public class MovieService {
 		MovieEntity mv = movieEntity;
 		return repo.save(mv);
 	}
-	 @Transactional
-	    public void updateRuntimeMinutes() {
-	        // Update runtimeMinutes based on genre using JPA repository method
-	        repo.updateRuntimeMinutesByGenre("Documentary", 15);
-	        repo.updateRuntimeMinutesByGenre("Animation", 30);
-	        repo.updateRuntimeMinutesByOtherGenres(45);
 
-	        System.out.println("Runtime minutes updated successfully.");
-	    }
-//	 public List<GenereSubTotal> getGenreMoviesWithSubtotals() {
-//	        return repo.getGenreMoviesWithSubtotals();
-//	    }
+	@Transactional
+	public void updateRuntimeMinutes() {
+		
+		repo.updateRuntimeMinutesByGenre("Documentary", 15);
+		repo.updateRuntimeMinutesByGenre("Animation", 30);
+		repo.updateRuntimeMinutesByOtherGenres(45);
+
+		System.out.println("Runtime minutes updated successfully.");
+	}
+
+	
 }

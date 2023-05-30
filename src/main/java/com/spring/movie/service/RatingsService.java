@@ -1,21 +1,14 @@
 package com.spring.movie.service;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.movie.dao.MovieRepository;
 import com.spring.movie.dao.RatingRepository;
+import com.spring.movie.model.GenereSubTotal;
 import com.spring.movie.model.GetMovieResponseTwo;
 import com.spring.movie.model.MovieEntity;
 import com.spring.movie.model.RatingEntity;
@@ -61,51 +54,57 @@ public class RatingsService {
 		return response;
 	}
 
-//	public  List<MovieGenreResponse> getGenreMoviesWithSubtotals() {
-//		List<MovieGenreResponse> respons = new ArrayList<>();
-//
-//		String sqlQuery = "SELECT genres AS Genre, primary_title AS primaryTitle, num_votes AS numVotes "
-//				+ "FROM movies " + "GROUP BY genres, primary_title WITH ROLLUP";
-//		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-//		dataSource.setUrl("jdbc:mysql://localhost:3306/jdbctwo");
-//		dataSource.setUsername("root");
-//		dataSource.setPassword("root");
-//		try (Connection connection = dataSource.getConnection();
-//				Statement statement = connection.createStatement();
-//				ResultSet resultSet = statement.executeQuery(sqlQuery)) {
-//
-//			String currentGenre = null;
-//			int subtotal = 0;
-//
-//			while (resultSet.next()) {
-//				String genre = resultSet.getString("Genre");
-//				String primaryTitle = resultSet.getString("primaryTitle");
-//				int numVotes = resultSet.getInt("numVotes");
-//
-//				if (genre != null) {
-//
-//					if (currentGenre != null) {
-//						respons.add(new MovieGenreResponse("TOTAL", "", subtotal));
-//					}
-//
-//					currentGenre = genre;
-//					subtotal = 0;
-//				}
-//
-//				respons.add(new MovieGenreResponse(genre, primaryTitle, numVotes));
-//				subtotal += numVotes;
-//			}
-//
-//			if (currentGenre != null) {
-//				respons.add(new MovieGenreResponse("TOTAL", "", subtotal));
-//			}
-//
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//
-//		return respons;
-//	}
-	 
+	public GenereSubTotal GenreSubtotal() {
+		List<MovieEntity> results = rep.getAllMovies();
+		List<RatingEntity> list = repo.getAllRatings();
+		GenereSubTotal genreMovieSubtotals = new GenereSubTotal();
+		int docTotal = 0;
+		int shortTotal = 0;
+		int sportTotal = 0;
+		int newsTotal = 0;
+		int animationTotal = 0;
+		int romanceTotal = 0;
+		int comedyTotal = 0;
+		for (MovieEntity e : results) {
+			for (RatingEntity r : list) {
+				if (e.getTconst().equals(r.getTconst()) && e.getGenres().equals("Documentary")) {
+					docTotal += r.getNumofvotes();
+
+				} else if (e.getTconst().equals(r.getTconst()) && e.getGenres().equals("Short")) {
+
+					shortTotal += r.getNumofvotes();
+
+				} else if (e.getTconst().equals(r.getTconst()) && e.getGenres().equals("Sport")) {
+
+					sportTotal += r.getNumofvotes();
+
+				} else if (e.getTconst().equals(r.getTconst()) && e.getGenres().equals("News")) {
+
+					newsTotal += r.getNumofvotes();
+
+				} else if (e.getTconst().equals(r.getTconst()) && e.getGenres().equals("Animation")) {
+
+					animationTotal += r.getNumofvotes();
+
+				} else if (e.getTconst().equals(r.getTconst()) && e.getGenres().equals("Romance")) {
+
+					romanceTotal += r.getNumofvotes();
+
+				} else if (e.getTconst().equals(r.getTconst()) && e.getGenres().endsWith("Comedy")) {
+
+					comedyTotal += r.getNumofvotes();
+
+				}
+			}
+
+		}
+		genreMovieSubtotals.setComedyTotal(comedyTotal);
+		genreMovieSubtotals.setRomanceTotal(romanceTotal);
+		genreMovieSubtotals.setAnimationTotal(animationTotal);
+		genreMovieSubtotals.setNewsTotal(newsTotal);
+		genreMovieSubtotals.setSportTotal(sportTotal);
+		genreMovieSubtotals.setShortTotal(shortTotal);
+		genreMovieSubtotals.setDocTotal(docTotal);
+		return genreMovieSubtotals;
+	}
 }

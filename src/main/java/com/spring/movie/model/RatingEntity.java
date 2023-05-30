@@ -12,10 +12,12 @@ public class RatingEntity {
 	@Id
 	@Column(name = "Tconst")
 	private String tconst;
+	
 	@Column(name = "average_rating")
 	private double averagerateing;
 	@Column(name = "num_votes") 
 	private int numofvotes;
+	
 	public RatingEntity(String tconst,double averagerateing, int numofvotes) {
 		super();
 		this.tconst = tconst;
